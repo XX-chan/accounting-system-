@@ -1,0 +1,58 @@
+from app import db
+from app.models import User,Category
+from app.services import transaction_service
+
+# 添加新分类
+def add_category(user_id,name,type):
+    category = Category(
+        user_id=user_id,
+        category_name=name,
+        category_type=type
+    )
+    if category and get_by_category_id(user_id,category.category_id):
+        db.session.add(category)
+        db.session.commit()
+        return category
+    return False
+
+# 删除分类
+def delete_category(user_id,category_id):
+    category = get_by_category_id(user_id,category_id)
+    if not category:
+        return False
+    db.session.delete(category)
+    db.session.commit()
+    return True
+
+# 修改分类
+def edit_category(user_id,category_id,**kwargs):
+    category = get_by_category_id(user_id,category_id)
+    if not category:
+        return False
+    if "user_id" in kwargs and kwargs[user_id] != user_id:
+        raise ValueError("不允许修改所属用户")
+    if "category_id" in kwargs and kwargs["category_id"] != category_id:
+        raise ValueError("不允许修改分类ID")
+    
+    for feild in ["category_name","category_type"]:
+        setattr(Category,feild,kwargs[feild])
+
+    db.session.commit()
+    return category
+
+# 查看用户的所有分类明细
+def get_user_category(user_id):
+    return Category.query.fliter_by(
+        user_id=user_id
+    ).all()
+
+
+# 查询用户的某个分类是否存在
+def get_by_category_id(user_id,category_id):
+    return Category.query.fliter_by(
+        user_id=user_id,
+        category_id=category_id
+    ).first()
+
+
+
