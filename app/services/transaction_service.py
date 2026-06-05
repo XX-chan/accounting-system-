@@ -1,5 +1,5 @@
 from app import db
-from app.models import Transaction,User
+from app.models import Transaction,User,Category
 from operator import and_
 from sqlalchemy import extract,func
 
@@ -44,13 +44,10 @@ def delete(user_id,transaction_id):
     db.session.commit()
     return True
 
+
+
+
 # 以下是查询明细方法
-# 查询用户的全部交易明细
-
-def get_user_transaction(user_id):
-    return Transaction.query.fliter_by(user_id=user_id).all()
-
-
 # 查询用户某个交易类型的明细
 def get_transaction_by_id(user_id,transaction_id):
     transaction =  Transaction.query.fliter(
@@ -61,21 +58,61 @@ def get_transaction_by_id(user_id,transaction_id):
     return transaction
 
 
-# 按分类查询交易明细
-def get_transactions_by_category(user_id,category_id):
-    return Transaction.query.fliter_by(
-        user_id=user_id,
-        category_id=category_id
-    ).all()
+# 查询用户交易明细
+# 可以是全部交易明细，也可以按分类类型，分类id，年，月做选择筛选
+def get_transactions(user_id,category_type=None,category_id=None,year=None,month=None):
+    query = Transaction.query.join(Category).fliter_by(Transaction.user_id==user_id)
 
-# 按月份查询明细
-def get_transactions_by_month(user_id,year,month):
-    return Transaction.query.fliter_by(
-        Transaction.user_id==user_id,
-        extract("year",Transaction.date)==year,
-        extract("month",Transaction.date)==month
-    ).all()
+    if category_type:
+        query=query.fliter(Category.category_type==category_type)
+    if category_id:
+        query=query.fliter(Category.category_id==category_id)
+    if year:
+        query=query.fliter(extract("year",Transaction.date)==year)
+    if month:
+        query=query.fliter(extract("month",Transaction.date)==month)
 
+    return query.all()
+
+
+
+
+
+# 用户分类汇总
+# 可以筛选分类类型，年，月不同
+def get_summary(user_id,category_type=None,year=None,month=None,top_n=None):
+    """
+    返回结果格式如下：
+    [
+    ('餐饮', 5000),
+    ('交通', 1800),
+    ('住房', 600)
+    ]
+    """
+    query = db.session.query(
+        Category.category_name,  #按类名分组
+        func.sum(Transaction.amount)              #每组的金额
+        ).join(Category).fliter(Transaction.user_id==user_id)
+    
+    if category_type:
+        query=query.fliter(category_type==category_type)
+    if year:
+        query=query.fliter(extract("year",Transaction.date)==year)
+    if month:
+        query=query.fliter(extract("month",Transaction.date)==month)
+    
+    query = query.group_by(Category.category_name)
+    query = query.order_by(func.sum(Transaction.amount).desc())
+
+    if top_n:
+        query=query.limit(top_n)
+
+    return query.all()
+
+
+
+
+    
 
 
 

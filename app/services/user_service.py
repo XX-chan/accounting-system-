@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 # 默认常量分类
 DEFAULT_CATEGORIES=[
     {"category_name":"餐饮","category_type":"expense"},
-    {"category_name":"餐饮","category_type":"expense"},
     {"category_name":"交通","category_type":"expense"},
     {"category_name":"购物","category_type":"expense"},
     {"category_name":"住房","category_type":"expense"},
