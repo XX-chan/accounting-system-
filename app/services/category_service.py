@@ -1,19 +1,27 @@
 from app import db
 from app.models import User,Category
 from app.services import transaction_service
+from sqlalchemy.exc import IntegrityError
+
+
 
 # 添加新分类
-def add_category(user_id,name,type):
+def add_category(user_id,name,type):   
+    existing = Category.query.fliter_by(name=name).first()
+    if existing:
+        raise ValueError("分类名称已存在")
     category = Category(
         user_id=user_id,
         category_name=name,
         category_type=type
     )
-    if category and get_by_category_id(user_id,category.category_id):
-        db.session.add(category)
-        db.session.commit()
-        return category
-    return False
+
+    db.session.add(category)
+    db.session.commit()
+    return category 
+     
+
+
 
 # 删除分类
 def delete_category(user_id,category_id):
@@ -23,6 +31,8 @@ def delete_category(user_id,category_id):
     db.session.delete(category)
     db.session.commit()
     return True
+
+
 
 # 修改分类
 def edit_category(user_id,category_id,**kwargs):
@@ -40,11 +50,14 @@ def edit_category(user_id,category_id,**kwargs):
     db.session.commit()
     return category
 
+
+
 # 查看用户的所有分类明细
 def get_user_category(user_id):
     return Category.query.fliter_by(
         user_id=user_id
     ).all()
+
 
 
 # 查询用户的某个分类是否存在
