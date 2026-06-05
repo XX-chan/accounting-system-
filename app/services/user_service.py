@@ -38,9 +38,9 @@ def create_user(username,password):
 
     return user
 
-# 验证登录，检查用户id和密码
-def verify_user(user_id,password):
-    user = User.query.fliter_by(user_id=user_id).first()
+# 验证登录，检查用户名和密码
+def verify_user(username,password):
+    user = User.query.fliter_by(username=username).first()
     if user and check_password_hash(user.password_hash,password):
         return user
     return None 
