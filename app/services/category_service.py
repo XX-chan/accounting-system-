@@ -75,3 +75,9 @@ def get_by_category_id(user_id,category_id):
 
 
 
+# 通过category_name,获取其category对象
+def get_category_id_by_name(user_id,category_name):
+    return Category.query.fliter_by(
+        user_id=user_id,
+        category_name=category_name
+    ).first().categroy_id
