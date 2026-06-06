@@ -12,6 +12,7 @@ def login():
     if not data:
         return jsonify({
             "success": False,
+            "data":None,
             "message":"请求体不能为空"    
         }),400
         
@@ -21,6 +22,7 @@ def login():
     if not username or password:
         return jsonify({
             "success": False,
+            "data":None,
             "message":"用户名和密码不能为空"    
         }),400
         
@@ -30,11 +32,13 @@ def login():
         session["user_id"]=user.user_id
         return jsonify({
             "success":True,
+            "data":None,
             "message":"登陆成功"
         })
     
     return jsonify({
         "success":False,
+        "data":None,
         "message":"账号或密码错误"
     })
 
@@ -46,6 +50,7 @@ def register():
     if not data:
         return jsonify({
             "success": False,
+            "data":None,
             "message":"请求体不能为空"    
         }),400
         
@@ -54,12 +59,14 @@ def register():
     if not username or password:
         return jsonify({
             "success": False,
+            "data":None,
             "message":"用户名和密码不能为空"    
         }),400
         
     create_user(username,password)
     return jsonify({
         "success":True,
+        "data":None,
         "message":"注册成功"
     }),201
     
@@ -69,6 +76,7 @@ def logout():
     session.clear()
     return jsonify({
         "success": True,
+        "data":None,
         "message":"已登出"
     }),200
     
