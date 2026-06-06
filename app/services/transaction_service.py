@@ -2,7 +2,8 @@ from app import db
 from app.models import Transaction,User,Category
 from operator import and_
 from sqlalchemy import extract,func
-
+from app.services import get_category_id_by_name,add
+from datetime import datetime
 
 def add(user_id,category_id,amount,date,note=None):
     transaction = Transaction(
@@ -110,8 +111,91 @@ def get_summary(user_id,category_type=None,year=None,month=None,top_n=None):
     return query.all()
 
 
+# 路由的辅助方法
+
+#将transactions转为字典格式
+def transaction_to_dict(t):
+    return {
+        "amount":t.amount,
+        "note":t.nont,
+        "date":t.date,
+        "category_id":t.category_id
+    }
+
+# 根据获得的data，返回月交易明细(字典类型)
+def get_all_ts_dict(user_id,request_obj):
+    year,month=extra_year_month_from_request(request_obj)
+
+    transactions=get_transactions(user_id=user_id,year=year,month=month)
+    return [transaction_to_dict(t) for t in transactions]
 
 
+# 返回用户指定的年月
+def extra_year_month_from_request(request_obj):
+    
+    if request_obj.method=="POST":
+        data=request_obj.get_json()
+        year=data.get("year")
+        month=data.get("month")
+
+        if month < 1 or month > 12:
+            raise ValueError("月份必须在1-12之间")
+
+    #GET请求，使用当前年月
+    else:
+        year=datetime.now().year
+        month=datetime.now().month
+
+    return year,month
+
+
+
+
+# 根据获得的data，添加交易
+def add_ts(user_id,data):
+
+    category_name=data.get("category_name")
+    amount=data.get("amount")
+    if not category_name or not amount:
+        return {
+            "success": False,
+            "message":"分类和金额不能为空"
+        }
+    note=data.get("note")
+    category_id=get_category_id_by_name(user_id,category_name)
+
+    if not category_id:
+        return {
+            "success":False,
+            "data":None,
+            "message":"该分类不存在"
+        }
+    
+
+    date=datetime.now().date()
+
+    transaction=add(
+        user_id=user_id,
+        category_id=category_id,
+        amount=amount,
+        date=date,
+        note=note,
+        )
+    
+    if transaction:
+        return {
+        "success": True,
+        "data":transaction_to_dict(transaction),
+        "message":"添加成功"
+        }
+    
+    else:
+        return {
+            "success": False,
+            "data":None,
+            "message":"添加失败"
+        }
+  
     
 
 
