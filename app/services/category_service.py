@@ -17,7 +17,13 @@ def add_category(user_id,name,type):
     )
 
     db.session.add(category)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        raise ValueError("分类名称已存在")
+    
     return category 
      
 
