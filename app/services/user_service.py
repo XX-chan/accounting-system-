@@ -1,6 +1,7 @@
 from app import db
 from app.models import User,Category
 from werkzeug.security import generate_password_hash,check_password_hash
+from sqlalchemy.exc import IntegrityError
 
 # 默认常量分类
 DEFAULT_CATEGORIES=[
@@ -17,10 +18,13 @@ DEFAULT_CATEGORIES=[
 ]
 # 创建新用户
 def create_user(username,password):
+    existing = User.query.filter_by(username=username).first()
+    if existing:
+        raise ValueError("用户名已存在")
+    
     hash_pw = generate_password_hash(password)
     user = User(username=username, password_hash=hash_pw)
     db.session.add(user)
-    db.session.flush()
 
     #初始化分类
     categories=[
@@ -32,9 +36,12 @@ def create_user(username,password):
         for c in DEFAULT_CATEGORIES
     ]
     db.session.add_all(categories)
-    db.session.commit()
 
-
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        raise ValueError("用户名已存在")
 
     return user
 
@@ -44,3 +51,4 @@ def verify_user(username,password):
     if user and check_password_hash(user.password_hash,password):
         return user
     return None 
+
