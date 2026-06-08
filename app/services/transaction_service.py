@@ -5,20 +5,45 @@ from sqlalchemy import extract,func
 from app.services import get_category_id_by_name,add
 from datetime import datetime
 
-def add(user_id,category_id,amount,date,note=None):
-    transaction = Transaction(
+
+
+# 根据获得的data，添加交易
+def add_ts(user_id,data):
+
+    category_name=data.get("category_name")
+    amount=data.get("amount")
+    if not category_name or not amount:
+        raise ValueError("分类和金额不能为空")
+        
+    note=data.get("note")
+    category_id=get_category_id_by_name(user_id,category_name)
+
+    if not category_id:
+        raise ValueError ("该分类不存在")
+       
+
+    date=datetime.now().date()
+
+    transaction=add(
         user_id=user_id,
         category_id=category_id,
         amount=amount,
         date=date,
-        note=note
-    )
-    db.session.add(transaction)
-    db.session.commit()
-    return transaction
+        note=note,
+        )
+    
+    if transaction:
+        db.session.add(transaction)
+        db.session.commit()
+        return transaction_to_dict(transaction),
+    
+    else:
+        return False
+  
+    
 
 # user_id和transaction_id,具有唯一性和不可更改性。
-def edit(user_id,transaction_id,**kwargs):
+def edit_transaction(user_id,transaction_id,**kwargs):
     transaction = get_transaction_by_id(user_id,transaction_id)
     if not transaction:
         raise ValueError("Transaction 不存在")
@@ -36,7 +61,7 @@ def edit(user_id,transaction_id,**kwargs):
     db.session.commit()
     return transaction
 
-def delete(user_id,transaction_id):
+def delete_ts(user_id,transaction_id):
     transaction = get_transaction_by_id(user_id,transaction_id)
     if not transaction:
         raise ValueError("Transaction不存在")
@@ -147,57 +172,6 @@ def extra_year_month_from_request(request_obj):
         month=datetime.now().month
 
     return year,month
-
-
-
-
-# 根据获得的data，添加交易
-def add_ts(user_id,data):
-
-    category_name=data.get("category_name")
-    amount=data.get("amount")
-    if not category_name or not amount:
-        return {
-            "success": False,
-            "message":"分类和金额不能为空"
-        }
-    note=data.get("note")
-    category_id=get_category_id_by_name(user_id,category_name)
-
-    if not category_id:
-        return {
-            "success":False,
-            "data":None,
-            "message":"该分类不存在"
-        }
-    
-
-    date=datetime.now().date()
-
-    transaction=add(
-        user_id=user_id,
-        category_id=category_id,
-        amount=amount,
-        date=date,
-        note=note,
-        )
-    
-    if transaction:
-        return {
-        "success": True,
-        "data":transaction_to_dict(transaction),
-        "message":"添加成功"
-        }
-    
-    else:
-        return {
-            "success": False,
-            "data":None,
-            "message":"添加失败"
-        }
-  
-    
-
 
 
 
