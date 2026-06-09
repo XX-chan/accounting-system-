@@ -1,9 +1,9 @@
 from flask import Flask
 from config import get_config
-from sqlalchemy import SQLALchemy
+from flask_sqlalchemy import SQLAlchemy
 
 #创建db实例
-db = SQLALchemy()
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
@@ -14,7 +14,9 @@ def create_app():
     db.init_app(app)
 
 
-    from routes import user_bp,ts_bp,cg_bp
+    from .routes.user_routes import user_bp
+    from .routes.transaction_routes import ts_bp
+    from .routes.category_routes import cg_bp
     #注册蓝图
     app.register_blueprint(user_bp)
     app.register_blueprint(ts_bp)

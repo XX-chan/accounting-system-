@@ -14,12 +14,12 @@ class Transaction(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey("user.id"),
+        db.ForeignKey("user.user_id"),
         nullable=False
     )
 
     category_id = db.Column(
         db.Integer,
-        db.ForeignKey("category.id"),
+        db.ForeignKey("categories.category_id"),
         nullable=False
     )

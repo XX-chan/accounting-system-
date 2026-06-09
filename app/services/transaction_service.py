@@ -2,7 +2,7 @@ from app import db
 from app.models import Transaction,User,Category
 from operator import and_
 from sqlalchemy import extract,func
-from app.services import get_category_id_by_name,add
+from app.services.category_service import get_category_id_by_name
 from datetime import datetime
 
 

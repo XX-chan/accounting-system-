@@ -31,4 +31,4 @@ config_by_name={
 #根据FLASK_CONFIG返回配置类
 def get_config():
     name = os.environ.get("FLASK_CONFIG","default")
-    return config_by_name(name,DevelopmentConfig)
+    return config_by_name.get(name,DevelopmentConfig)

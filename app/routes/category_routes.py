@@ -1,10 +1,10 @@
 from flask import Blueprint,session,request,jsonify
-from app.services import add_categroy,get_categories_dict,delete_category
+from app.services.category_service import add_category,get_categories_dict,delete_category
 
 cg_bp=Blueprint("category",__name__)
 
 #新增分类
-@cg_bp.route("/add_cg",methods="[POST]")
+@cg_bp.route("/add_cg",methods=["POST"])
 def add_cg():
     user_id=session.get("userid")
     name=request.get_json("category_name")
@@ -42,7 +42,7 @@ def get_categories(cg_type):
 
 
 #删除分类
-@cg_bp.route("/delete_cg/<int:cg_id",methods=["DELETE"])
+@cg_bp.route("/delete_cg/<int:cg_id>",methods=["DELETE"])
 def delete_cg(cg_id):
     user_id=session.get("user_id")
     result=delete_category(user_id=user_id,category_id=cg_id)

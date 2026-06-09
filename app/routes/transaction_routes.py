@@ -1,5 +1,5 @@
 from flask import Blueprint,session,request,jsonify
-from app.services import get_all_ts_dict,add_ts,edit_transaction,delete_ts
+from app.services.transaction_service import get_all_ts_dict,add_ts,edit_transaction,delete_ts
 from datetime import datetime
 
 #创建蓝图
@@ -8,7 +8,7 @@ ts_bp = Blueprint("transaction",__name__)
 
 #返回用户月支出，默认是当月。
 #可选择年月
-@ts_bp.route("all_ts",methods=["GET","POST"])
+@ts_bp.route("/all_ts",methods=["GET","POST"])
 def all_ts():
     user_id=session.get("user_id")
     if not user_id:
@@ -37,7 +37,7 @@ def all_ts():
 
 
 #添加交易
-@ts_bp.route("add_expense",methods=["POST"])
+@ts_bp.route("/add_expense",methods=["POST"])
 def add_ts():
     user_id=session.get("user_id")
     if not user_id:
