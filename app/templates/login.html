@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>登录页面</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <form method="POST",action="/login">
+            <div class="green-text form-group mt-5">
+                用户名
+            </div>
+            <input type="text",name="username",calss="from-control">
+
+            <div class="greeen-text form-group">
+                密码
+            </div>
+            <input type="text",name="password">
+        </form>
+
+        <div class="center">
+            <button type="submit">登录</button>
+
+        </div>
+
+        <div>
+            没有账号？<a href="{{ url_for('register')}}"></a>
+        </div>
+    </body>
+
+</html>
