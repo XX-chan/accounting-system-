@@ -1,10 +1,14 @@
-from flask import Bluepirnt,request,session,jsonify,render_template
-from app.services import verify_user,create_user
+from flask import render_template,Blueprint,request,session,jsonify,render_template
+from app.services.user_service import verify_user,create_user
 
 
 #注册蓝图
-user_bp = Bluepirnt("user",__name__)
+user_bp = Blueprint("user",__name__)
 
+#首页
+@user_bp.route("/")
+def index():
+    return render_template("loiin.html")
 #登录
 @user_bp.route("/login",methods=["POST"])
 def login():
@@ -70,6 +74,13 @@ def register():
         "message":"注册成功"
     }),201
     
+
+#注册页面
+@user_bp.route("/register-page",methods=["GET"])
+def register_page():
+    return render_template("register.html")
+
+
 
 @user_bp.route("/logout")
 def logout():
