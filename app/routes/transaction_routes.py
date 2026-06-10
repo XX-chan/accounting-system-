@@ -70,7 +70,7 @@ def add_ts():
 def edit_ts(ts_id):
     data=request.get_json()
     user_id=session.get("user_id")
-    result=edit_transaction(user_id=user_id,transaction_id=ts_id,kwargs=data)
+    result=edit_transaction(user_id=user_id,transaction_id=ts_id,**data)
     if result:
         return jsonify({
             "success":True,
@@ -85,7 +85,7 @@ def edit_ts(ts_id):
 
 
 #删除交易
-@ts_bp.route("/delets_ts/<int:ts_id>",methods=["DELETE"])
+@ts_bp.route("/delete_ts/<int:ts_id>",methods=["DELETE"])
 def delete_ts(ts_id):
     user_id=session.get("user_id")
     result=delete_ts(user_id=user_id,transaction_id=ts_id)

@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 # 添加新分类
 def add_category(user_id,name,type):   
-    existing = Category.query.fliter_by(name=name).first()
+    existing = Category.query.filter_by(name=name).first()
     if existing:
         raise ValueError("分类名称已存在")
     category = Category(
@@ -32,14 +32,20 @@ def add_category(user_id,name,type):
 # 删除分类
 #不允许删除已有记账记录的分类。
 def delete_category(user_id,category_id):
-    transaction=Transaction.query.flitr_by(
+    category=get_by_category_id(user_id,category_id)
+    if not category:
+        raise ValueError("分类不存在")
+    
+    
+    transaction=Transaction.query.filter_by(
         user_id=user_id,
         category_id=category_id
     ).first()
 
     if transaction:
         raise ValueError("该分类已有记账记录，不能删除")
-    category=get_category_id_by_name(user_id,category_id)
+    
+    
     db.session.delete(category)
     db.session.commit()
     return True
@@ -66,7 +72,7 @@ def edit_category(user_id,category_id,**kwargs):
 
 # 查看用户的所有分类明细
 def get_user_categories(user_id,category_type=None):
-    return Category.query.fliter_by(
+    return Category.query.filter_by(
         user_id=user_id,
         category_type=category_type,
     ).all()
@@ -87,7 +93,7 @@ def get_categories_dict(user_id,category_type=None):
 
 # 查询用户的某个分类是否存在
 def get_by_category_id(user_id,category_id):
-    return Category.query.fliter_by(
+    return Category.query.filter_by(
         user_id=user_id,
         category_id=category_id
     ).first()
@@ -96,7 +102,9 @@ def get_by_category_id(user_id,category_id):
 
 # 通过category_name,获取其category对象
 def get_category_id_by_name(user_id,category_name):
-    return Category.query.fliter_by(
+    return Category.query.filter_by(
         user_id=user_id,
         category_name=category_name
     ).first().categroy_id
+
+

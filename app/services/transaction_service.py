@@ -6,7 +6,6 @@ from app.services.category_service import get_category_id_by_name
 from datetime import datetime
 
 
-
 # 根据获得的data，添加交易
 def add_ts(user_id,data):
 
@@ -24,7 +23,7 @@ def add_ts(user_id,data):
 
     date=datetime.now().date()
 
-    transaction=add(
+    transaction=Transaction(
         user_id=user_id,
         category_id=category_id,
         amount=amount,
@@ -35,7 +34,7 @@ def add_ts(user_id,data):
     if transaction:
         db.session.add(transaction)
         db.session.commit()
-        return transaction_to_dict(transaction),
+        return transaction_to_dict(transaction)
     
     else:
         return False
@@ -76,9 +75,9 @@ def delete_ts(user_id,transaction_id):
 # 以下是查询明细方法
 # 查询用户某个交易类型的明细
 def get_transaction_by_id(user_id,transaction_id):
-    transaction =  Transaction.query.fliter(
+    transaction =  Transaction.query.filter(
         and_(
-            Transaction.id==transaction_id,User.id==user_id
+            Transaction.transaction_id==transaction_id,User.user_id==user_id
         )
     ).first()
     return transaction

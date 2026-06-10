@@ -1,5 +1,6 @@
 from flask import Blueprint,session,request,jsonify
-from app.services.category_service import add_category,get_categories_dict,delete_category
+from app.services.category_service import category_to_dict,get_categories_dict,delete_category
+from app.models import Category
 
 cg_bp=Blueprint("category",__name__)
 
@@ -9,11 +10,11 @@ def add_cg():
     user_id=session.get("userid")
     name=request.get_json("category_name")
     type=request.get_json("category_type")
-    category=add_categroy(user_id=user_id,name=name,type=type)
+    category=Category(user_id=user_id,category_name=name,category_type=type)
     if category:
         return jsonify({
             "success": True,
-            "data":category,
+            "data":category_to_dict(category),
             "message":"添加分类成功"
         }),200
     return jsonify({
