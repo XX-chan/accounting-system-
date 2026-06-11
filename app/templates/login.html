@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <form method="POST",action="/login">
+        <form method="POST",action="{{url_for('user.login')}}">
             <div class="green-text form-group mt-5">
                 用户名
             </div>
@@ -16,15 +16,16 @@
                 密码
             </div>
             <input type="text",name="password">
-        </form>
+            <div class="center">
 
-        <div class="center">
             <button type="submit">登录</button>
 
-        </div>
+            </div>
+        </form>
+
 
         <div>
-            没有账号？<a href="{{ url_for('register')}}"></a>
+            <a href="{{ url_for('user.register_page')}}">还没有账号？</a>
         </div>
     </body>
 

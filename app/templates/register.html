@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>注册页面</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <form action="{{url_for('user.register')}}", method="post">
+
+            <div class="greeen-text form-group mt-5">
+                用户名
+            </div>
+            <input type="text", name="username",class="from-control">
+
+            <div class="greeen-text form-group">
+                密码
+            </div>
+            <input type="text", name="password">
+            
+            <div>
+            <button type="submit">注册</button>
+            </div>
+
+        </form>
+
+
+        <div>
+            <a href="{{url_for('user.login')}}">已经有账号？</a>
+        </div>
+    </body>
+
+
+
+
+</html>
+

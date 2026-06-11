@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>home</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <nav>
+            <a href="#">home</a>
+
+            <ul>
+                <li><a href="{{url_for('user.index')}}">仪表盘</a></li>
+                <li><a href="{{url_for('transaction.all_ts')}}">交易明细</a></li>
+                <li><a href="#">汇总</a></li>
+            </ul>
+        </nav>
+
+        <div class="action-bar">
+            <a href="{{url_for('transaction.add_ts_page')}}">新增交易</a>
+            <a href="{{url_for('category.add_cg_page')}}">新增分类</a>
+        </div>
+
+        <div class="dashboard">
+            <h2 class="dashboard-title">本月报告</h2>
+            <div class="stats-grid">
+                <div class="stats-label">总支出</div>
+                <div class="stats-value", id="expenseAmount">RMB</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stats-label">总收入</div>
+                <div class="stats-value", id="=incomeAmount">RMB</div>
+            </div><div class="stats-grid">
+
+                <div class="stats-label">盈余</div>
+                <div class="stats-value", id="remainingAmount">RMB</div>
+            </div>
+        </div>
+
+
+        <div class="expense-table">
+            <h2>本月支出金额TOP 10</h2>
+           <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>分类</th>
+                        <th>金额</th>
+                        <th>备注</th>
+                        <th>日期</th>
+                        <th>编辑</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+
+                <tbody id="expenseList"> 
+                    <tr>
+                        <td>加载中...</td>
+                    </tr>
+
+                </tbody>
+           </table>
+        </div>
+
+
+    <script>
+        const now=new Date();
+        const year=now.getFullYear();
+         const month=now.getMonth()+1;
+                
+        async function loadReportData(){
+            try {
+                const res=await fetch("/monthly-report",{
+                    method:"post",
+                    headers:{
+                        "context-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        "year":year,
+                        "month":month
+                    })
+                });
+
+                const result=await res.json()
+                if (result.success) {
+                    const expenseData=result.data.expense;
+                    const incomeData=result.data.incomeData;
+                    const remainingData=result.data.remaining;
+
+                    document.getElementById("expenseAmount").innerText=`RMB ${expenseData}`;
+                    document.getElementById("incomeAmount").innerText=`RMB ${incomeData}`;
+                    document.getElementById("remainingAmount").innerText=`RMB ${remainingData}`;   
+                } else {
+                    console.error("接口返回失败",result.message);
+                }
+            } catch (error){
+                console.error("加载失败",error)
+            }
+        }
+
+
+        async function loadExpenseData() {
+            try {
+                const top_n=10;
+                const res=await fetch("/monthly-top",{
+                    method:"post",
+                    headers:{
+                        "context-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        "year":year,
+                        "month":month,
+                        "top_n":top_n
+                        })
+                });
+                const result=await res.json()
+                if(result.success){
+                    renderExpenseTable(result.data)
+                }
+            } catch (error){
+                console.error("加载失败",error )
+            }
+                
+        }
+
+
+        async function renderExpenseTable(expense) {
+            if(!expense || expense.length == 0) {
+                const tbody=document.getElementById("expenseList");
+                const tr=document.createElement("tr")
+                const td=document.createElement("td")
+                td1.textContent = "暂无数据"
+                tr.appendChild(td)
+                tbody.appendChild(tr)
+                return;
+            }
+
+            for (const item of expense) {
+                const tbody=document.getElementById("expenseList");
+                const tr=document.createElement("tr")
+
+                const td1=document.createElement("td")
+                td1.textContent = item.category_name
+
+                const td2=document.createElement("td")
+                td2.textContent = item.amount.toFixed(2)
+
+                const td3=document.createElement("td")
+                td3.textContent = item.note
+
+                const td4=document.createElement("td")
+                td4.textContent=item.date
+
+                const td5=document.createElement("td")
+                const btn1=document.createElement("button")
+                btn1.textContent="编辑"
+                btn1.addEventListener("click",() => {
+                    editExpense(item.transaction_id)
+                })
+
+                td5.appendChild(btn1)
+
+                const td6=document.createElement("td")
+                const btn2=document.createElement("button")
+                bt2.textContent="删除"
+                bt2.addEventListener("click", () => {
+                    deleteExpense(item.transaction_id)
+                })
+                td6.appendChild(btn2)
+
+                tr.appendChild(td1)
+                tr.appendChild(td2)
+                tr.appendChild(td3)
+                tr.appendChild(td4)
+                tr.appendChild(td5)
+                tr.appendChild(td6)
+
+                tbody.appendChild(tr)
+            }
+
+        }
+
+
+        async function deleteExpense(ts_id) {
+            if(!confirm("确定要删除吗？")) return;
+
+            try{
+                const res=await fetch(`/delete_ts/${ts_id}`,{
+                    method:"delete"
+                })
+
+                const result=await res.json()
+                if(result.success){
+                    loadExpenseData();
+                } else{
+                    alert("删除失败");
+                }
+            } catch (error){
+                console.error("删除失败",error)
+            }
+                
+        }
+
+        async function editExpense(ts_id) {
+            window.location.herf=`/deit/${ts_id}`
+        }
+
+        loadReportData();
+        loadExpenseData();
+    </script>
+
+
+    </body>
+</html>
