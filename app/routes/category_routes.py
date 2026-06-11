@@ -1,8 +1,15 @@
-from flask import Blueprint,session,request,jsonify
+from flask import render_template,Blueprint,session,request,jsonify
 from app.services.category_service import category_to_dict,get_categories_dict,delete_category
 from app.models import Category
 
 cg_bp=Blueprint("category",__name__)
+
+
+#新增分类页面路由
+@cg_bp.route("/addcg-page")
+def add_cg_page():
+    return render_template("add_cg.html")
+
 
 #新增分类
 @cg_bp.route("/add_cg",methods=["POST"])

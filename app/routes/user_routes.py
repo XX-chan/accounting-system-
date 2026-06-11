@@ -8,11 +8,19 @@ user_bp = Blueprint("user",__name__)
 #首页
 @user_bp.route("/")
 def index():
-    return render_template("loiin.html")
+    return render_template("home.html")
+
+
+#登录页面路由
+@user_bp.route("/login-page")
+def login_page():
+    return render_template("login.html")
+
+
 #登录
 @user_bp.route("/login",methods=["POST"])
 def login():
-    data = request.get_json()
+    data = request.form
     if not data:
         return jsonify({
             "success": False,
@@ -23,7 +31,7 @@ def login():
     username=data.get("username")
     password=data.get("password")
 
-    if not username or password:
+    if not username or not password:
         return jsonify({
             "success": False,
             "data":None,
@@ -50,7 +58,7 @@ def login():
 @user_bp.route("/register",methods=["POST"])
 def register():
   
-    data = request.get_json()
+    data = request.form
     if not data:
         return jsonify({
             "success": False,
@@ -60,7 +68,7 @@ def register():
         
     username=data.get("username")
     password=data.get("password")
-    if not username or password:
+    if not username or not password:
         return jsonify({
             "success": False,
             "data":None,

@@ -1,5 +1,5 @@
-from flask import Blueprint,session,request,jsonify
-from app.services.transaction_service import get_all_ts_dict,add_ts,edit_transaction,delete_ts
+from flask import Blueprint,session,request,jsonify,render_template
+from app.services.transaction_service import get_monthly_ts_dict,add_ts,edit_transaction,delete_ts,get_summary,get_all_ts_to_dict
 from datetime import datetime
 
 #创建蓝图
@@ -18,7 +18,7 @@ def all_ts():
             "message":"未登录"
             }),401
     
-    data=get_all_ts_dict(request)
+    data=get_monthly_ts_dict(request)
     
     if data:
         return jsonify({
@@ -34,7 +34,10 @@ def all_ts():
     }),400
 
     
-
+#添加交易页面路由
+@ts_bp.route("/addts-page")
+def add_ts_page():
+    return render_template("add_ts.html")
 
 #添加交易
 @ts_bp.route("/add_expense",methods=["POST"])
@@ -64,6 +67,54 @@ def add_ts():
             "message":"添加失败"
         }),500
   
+#当月报告,返回当月总支出，总收入，盈余的金额
+@ts_bp.route("/monthly-report",methods=["POST"])
+def monthly_report():
+    user_id=session.get("user_id")
+    data=request.get_json()
+    year=data.get("year")
+    month=data.get("month")
+    expense=get_summary(user_id=user_id,year=year,month=month,category_type="expense")
+    income=get_summary(user_id=user_id,year=year,month=month,category_type="income")
+    remaining=expense-income
+    redata={
+        "expense":expense,
+        "income":income,
+        "remaining":remaining
+    }
+    return jsonify({
+        "success": True,
+        "data":redata,
+        "message":"返回成功"
+    }),200
+
+
+#当月支出前10明细。
+@ts_bp.route("/monthly-top",methods=["POST"])
+def monthly_top():
+    user_id=session.get("user_id")
+    data=request.get_json()
+    if data:
+        redata=get_all_ts_to_dict(user_id,**data)
+        return jsonify({
+            "success": True,
+            "data":redata,
+            "message":"获取成功"
+        }),200
+    
+    return jsonify({
+        "success": False,
+        "data":None,
+        "message":"请输入需求"
+    }),500
+
+    
+    
+
+
+
+
+
 
 #编辑交易明细
 @ts_bp.route("/edit/<int:ts_id>",methods=["POST"])
