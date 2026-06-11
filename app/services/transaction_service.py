@@ -85,27 +85,44 @@ def get_transaction_by_id(user_id,transaction_id):
 
 # 查询用户交易明细
 # 可以是全部交易明细，也可以按分类类型，分类id，年，月做选择筛选
-def get_transactions(user_id,category_type=None,category_id=None,year=None,month=None):
-    query = Transaction.query.join(Category).fliter_by(Transaction.user_id==user_id)
+def get_transactions(user_id,**kwargs):
+    query = Transaction.query.join(Category).filter(Transaction.user_id==user_id)
 
+    category_type=kwargs.get("category_type")
     if category_type:
-        query=query.fliter(Category.category_type==category_type)
+        query=query.filter(Category.category_type==category_type)
+
+    category_id=kwargs.get("category_id")
     if category_id:
-        query=query.fliter(Category.category_id==category_id)
+        query=query.filter(Category.category_id==category_id)
+
+    year=kwargs.get("year")
     if year:
-        query=query.fliter(extract("year",Transaction.date)==year)
+        query=query.filter(extract("year",Transaction.date)==year)
+
+    month=kwargs.get("month")
     if month:
-        query=query.fliter(extract("month",Transaction.date)==month)
+        query=query.filter(extract("month",Transaction.date)==month)
+
+    order=kwargs.get("order")
+    if order:
+        query=query.order_by(Transaction.amount.desc())
+
+    top_n=kwargs.get("top_n")
+    if top_n:
+        query=query.limit(top_n)
 
     return query.all()
 
-
-
+#返回所有ts明细-字典形式
+def get_all_ts_to_dict(user_id,**kwargs):
+    transactions=get_transactions(user_id,**kwargs)
+    return [transaction_to_dict(t) for t in transactions]
 
 
 # 用户分类汇总
 # 可以筛选分类类型，年，月不同
-def get_summary(user_id,category_type=None,year=None,month=None,top_n=None):
+def get_summary(user_id,**kwargs):
     """
     返回结果格式如下：
     [
@@ -117,18 +134,24 @@ def get_summary(user_id,category_type=None,year=None,month=None,top_n=None):
     query = db.session.query(
         Category.category_name,  #按类名分组
         func.sum(Transaction.amount)              #每组的金额
-        ).join(Category).fliter(Transaction.user_id==user_id)
+        ).join(Category).filter(Transaction.user_id==user_id)
     
+    category_type=kwargs.get("category_type")
     if category_type:
-        query=query.fliter(category_type==category_type)
+        query=query.filter(category_type==category_type)
+    
+    year=kwargs.get("year")
     if year:
-        query=query.fliter(extract("year",Transaction.date)==year)
+        query=query.filter(extract("year",Transaction.date)==year)
+
+    month=kwargs.get(month)
     if month:
-        query=query.fliter(extract("month",Transaction.date)==month)
+        query=query.filter(extract("month",Transaction.date)==month)
     
     query = query.group_by(Category.category_name)
     query = query.order_by(func.sum(Transaction.amount).desc())
 
+    top_n=kwargs.get("top_n")
     if top_n:
         query=query.limit(top_n)
 
@@ -147,11 +170,16 @@ def transaction_to_dict(t):
     }
 
 # 根据获得的data，返回月交易明细(字典类型)
-def get_all_ts_dict(user_id,request_obj):
+def get_monthly_ts_dict(user_id,request_obj):
     year,month=extra_year_month_from_request(request_obj)
+    data={
+        "year":year,
+        "month":month
+    }
 
-    transactions=get_transactions(user_id=user_id,year=year,month=month)
+    transactions=get_transactions(user_id=user_id,**data)
     return [transaction_to_dict(t) for t in transactions]
+
 
 
 # 返回用户指定的年月
