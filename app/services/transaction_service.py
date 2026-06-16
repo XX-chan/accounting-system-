@@ -86,7 +86,8 @@ def get_transaction_by_id(user_id,transaction_id):
 # 查询用户交易明细
 # 可以是全部交易明细，也可以按分类类型，分类id，年，月做选择筛选
 def get_transactions(user_id,**kwargs):
-    query = Transaction.query.join(Category).filter(Transaction.user_id==user_id)
+    query = db.session.query(Transaction,Category.category_name).join(Category).filter(Transaction.user_id==user_id)
+    
 
     category_type=kwargs.get("category_type")
     if category_type:
@@ -117,7 +118,7 @@ def get_transactions(user_id,**kwargs):
 #返回所有ts明细-字典形式
 def get_all_ts_to_dict(user_id,**kwargs):
     transactions=get_transactions(user_id,**kwargs)
-    return [transaction_to_dict(t) for t in transactions]
+    return [transaction_to_dict(t,cn) for t,cn in transactions]
 
 
 # 用户分类汇总
@@ -155,18 +156,22 @@ def get_summary(user_id,**kwargs):
     if top_n:
         query=query.limit(top_n)
 
-    return query.all()
+    result =query.all()
+
+    return sum(row[1] for row in result)
 
 
 # 路由的辅助方法
 
 #将transactions转为字典格式
-def transaction_to_dict(t):
+def transaction_to_dict(t,cn=None):
     return {
         "amount":t.amount,
         "note":t.note,
         "date":t.date,
-        "category_id":t.category_id
+        "category_id":t.category_id,
+        "category_name":cn
+       
     }
 
 # 根据获得的data，返回月交易明细(字典类型)
