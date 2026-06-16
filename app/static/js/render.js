@@ -2,6 +2,7 @@
         async function renderExpenseTable(expense,tbodyId) {
             if(!expense || expense.length == 0) {
                 const tbody=document.getElementById(tbodyId);
+                tbody.innerHTML="";
                 const tr=document.createElement("tr")
                 const td=document.createElement("td")
                 td.textContent = "暂无数据"
