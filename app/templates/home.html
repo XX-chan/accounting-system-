@@ -13,6 +13,9 @@
                 <li><a href="{{url_for('user.index')}}">仪表盘</a></li>
                 <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
                 <li><a href="#">汇总</a></li>
+                <li><a href="{{url_for('user.login_page')}}">登录</a></li>
+                <li><a href="{{url_for('user.register_page')}}">注册</a></li>
+                <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
             </ul>
         </nav>
 
@@ -55,7 +58,7 @@
 
                 <tbody id="expenseList"> 
                     <tr>
-                        <td>加载中...</td>
+                        <td></td>
                     </tr>
 
                 </tbody>
