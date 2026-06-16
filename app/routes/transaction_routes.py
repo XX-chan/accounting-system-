@@ -1,5 +1,5 @@
-from flask import Blueprint,session,request,jsonify,render_template
-from app.services.transaction_service import get_monthly_ts_dict,add_ts,edit_transaction,delete_ts,get_summary,get_all_ts_to_dict
+from flask import redirect,url_for,Blueprint,session,request,jsonify,render_template
+from app.services.transaction_service import get_monthly_ts_dict,add_transaction,edit_transaction,delete_ts,get_summary,get_all_ts_to_dict
 from datetime import datetime
 
 #创建蓝图
@@ -42,35 +42,25 @@ def all_ts_page():
 #添加交易页面路由
 @ts_bp.route("/addts-page")
 def add_ts_page():
-    return render_template("add_ts.html")
+    return render_template("add_transaction.html")
 
 #添加交易
 @ts_bp.route("/add_expense",methods=["POST"])
 def add_ts():
     user_id=session.get("user_id")
     if not user_id:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"未登录"
-        }),401
+        return render_template("login.html",error="请先登录")
     
-    data=request.get_json()
     
-    result=add_ts(user_id,data)
+    data=request.form
+    
+    if data:
+        result=add_transaction(user_id,data)
 
     if result:
-        return jsonify({
-            "success":True,
-            "data":result,
-            "message":"添加成功"
-        }),200
+        return redirect(url_for("user.index"))
     else:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"添加失败"
-        }),500
+        return redirect(url_for("transaction.add_ts_page"))
   
 #当月报告,返回当月总支出，总收入，盈余的金额
 @ts_bp.route("/monthly-report",methods=["POST"])

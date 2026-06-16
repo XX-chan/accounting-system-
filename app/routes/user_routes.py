@@ -65,11 +65,7 @@ def register_page():
 @user_bp.route("/logout")
 def logout():
     session.clear()
-    return jsonify({
-        "success": True,
-        "data":None,
-        "message":"已登出"
-    }),200
+    return redirect(url_for("user.login")) 
     
 
 
