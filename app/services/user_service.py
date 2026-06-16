@@ -9,22 +9,24 @@ DEFAULT_CATEGORIES=[
     {"category_name":"交通","category_type":"expense"},
     {"category_name":"购物","category_type":"expense"},
     {"category_name":"住房","category_type":"expense"},
-    {"category_name":"其他","category_type":"expense"},
     {"category_name":"工资","category_type":"expense"},
     {"category_name":"兼职","category_type":"expense"},
     {"category_name":"理财","category_type":"expense"},
     {"category_name":"礼金","category_type":"expense"},
-    {"category_name":"其他","category_type":"expense"},
 ]
 # 创建新用户
 def create_user(username,password):
+    print("注册用户名：",username)
+
     existing = User.query.filter_by(username=username).first()
+    print("existing:",existing)
     if existing:
-        raise ValueError("用户名已存在")
+        return False,"用户名已存在"
     
     hash_pw = generate_password_hash(password)
     user = User(username=username, password_hash=hash_pw)
     db.session.add(user)
+    db.session.flush()
 
     #初始化分类
     categories=[
@@ -41,13 +43,13 @@ def create_user(username,password):
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        raise ValueError("用户名已存在")
+        raise ValueError("数据冲突")
 
     return user
 
 # 验证登录，检查用户名和密码
 def verify_user(username,password):
-    user = User.query.fliter_by(username=username).first()
+    user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password_hash,password):
         return user
     return None 
