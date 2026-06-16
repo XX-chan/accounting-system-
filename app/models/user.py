@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 class User(db.Model):
     __tablename__ = "user"
@@ -12,5 +13,9 @@ class User(db.Model):
     
     password_hash = db.Column(db.String(255),nullable = False)
 
-    create_at = db.Column(db.Date,nullable = False)
+    create_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        nullable = False
+    )
 
