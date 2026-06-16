@@ -1,4 +1,4 @@
-from flask import render_template,Blueprint,request,session,jsonify,render_template
+from flask import redirect,url_for,render_template,Blueprint,request,session,jsonify,render_template
 from app.services.user_service import verify_user,create_user
 
 
@@ -22,37 +22,21 @@ def login_page():
 def login():
     data = request.form
     if not data:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"请求体不能为空"    
-        }),400
+        return render_template("login.html",error="请求体不能为空")
         
     username=data.get("username")
     password=data.get("password")
 
     if not username or not password:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"用户名和密码不能为空"    
-        }),400
+        return render_template("login.html",error="用户名和密码不能为空")
         
     user=verify_user(username,password)
 
     if user:
         session["user_id"]=user.user_id
-        return jsonify({
-            "success":True,
-            "data":None,
-            "message":"登陆成功"
-        })
+        return redirect(url_for("user.index"))
     
-    return jsonify({
-        "success":False,
-        "data":None,
-        "message":"账号或密码错误"
-    })
+    return render_template("login.html",error="账号或密码错误")
 
 #注册
 @user_bp.route("/register",methods=["POST"])
@@ -60,27 +44,15 @@ def register():
   
     data = request.form
     if not data:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"请求体不能为空"    
-        }),400
+        return render_template("register.html",error="请求体不能为空")
         
     username=data.get("username")
     password=data.get("password")
     if not username or not password:
-        return jsonify({
-            "success": False,
-            "data":None,
-            "message":"用户名和密码不能为空"    
-        }),400
+        return render_template("register.html",error="用户名和密码不能为空")
         
     create_user(username,password)
-    return jsonify({
-        "success":True,
-        "data":None,
-        "message":"注册成功"
-    }),201
+    return redirect(url_for("user.login_page"))
     
 
 #注册页面
