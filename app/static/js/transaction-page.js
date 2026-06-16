@@ -29,7 +29,7 @@
                 const result=await request(config.url,"post",config.body)
     
                 if(result.success){
-                    renderExpenseTable(result.data)
+                    renderExpenseTable(result.data,"expenseList")
                 }
             } catch (error){
                 console.error("加载失败",error )
