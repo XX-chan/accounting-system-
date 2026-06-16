@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 # 根据获得的data，添加交易
-def add_ts(user_id,data):
+def add_transaction(user_id,data):
 
     category_name=data.get("category_name")
     amount=data.get("amount")
@@ -138,13 +138,13 @@ def get_summary(user_id,**kwargs):
     
     category_type=kwargs.get("category_type")
     if category_type:
-        query=query.filter(category_type==category_type)
+        query=query.filter(Category.category_type==category_type)
     
     year=kwargs.get("year")
     if year:
         query=query.filter(extract("year",Transaction.date)==year)
 
-    month=kwargs.get(month)
+    month=kwargs.get("month")
     if month:
         query=query.filter(extract("month",Transaction.date)==month)
     
