@@ -6,17 +6,17 @@
     </head>
 
     <body>
-        <form action="{{url_for('user.register')}}", method="post">
+        <form action="{{url_for('user.register')}}" method="post">
 
             <div class="greeen-text form-group mt-5">
                 用户名
             </div>
-            <input type="text", name="username",class="from-control">
+            <input type="text" name="username" class="from-control">
 
             <div class="greeen-text form-group">
                 密码
             </div>
-            <input type="text", name="password">
+            <input type="text" name="password">
             
             <div>
             <button type="submit">注册</button>
@@ -26,8 +26,12 @@
 
 
         <div>
-            <a href="{{url_for('user.login')}}">已经有账号？</a>
+            <a href="{{url_for('user.login_page')}}">已经有账号？</a>
         </div>
+
+     {% if error %}
+     <p style="color:red;">{{ error }}</p>
+     {% endif %}
     </body>
 
 
