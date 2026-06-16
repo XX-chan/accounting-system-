@@ -22,7 +22,7 @@
             <h2> 历史交易明细 </h2>
     
             
-            <form>
+            <form method="POST" action="{{ url_for('transaction.all_ts')}}" >
                 <input id="input-year" placeholder="输入查询年份">
                 <input id="input-month" placeholder="输入查询月份">
 
