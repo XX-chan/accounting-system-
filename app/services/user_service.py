@@ -9,10 +9,10 @@ DEFAULT_CATEGORIES=[
     {"category_name":"交通","category_type":"expense"},
     {"category_name":"购物","category_type":"expense"},
     {"category_name":"住房","category_type":"expense"},
-    {"category_name":"工资","category_type":"expense"},
-    {"category_name":"兼职","category_type":"expense"},
-    {"category_name":"理财","category_type":"expense"},
-    {"category_name":"礼金","category_type":"expense"},
+    {"category_name":"工资","category_type":"income"},
+    {"category_name":"兼职","category_type":"income"},
+    {"category_name":"理财","category_type":"income"},
+    {"category_name":"礼金","category_type":"income"},
 ]
 # 创建新用户
 def create_user(username,password):
