@@ -33,6 +33,11 @@ def all_ts():
         "message":"请求失败"
     }),400
 
+#历史交易页面路由
+@ts_bp.route("/all-ts-page")
+def all_ts_page():
+    return render_template("transactions.html")
+
     
 #添加交易页面路由
 @ts_bp.route("/addts-page")
