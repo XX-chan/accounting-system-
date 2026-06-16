@@ -80,6 +80,7 @@ def get_user_categories(user_id,category_type=None):
 # 将category转为字典格式
 def category_to_dict(c):
     return {
+        "category_id":c.category_id,
         "category_name":c.category_name,
         "category_type":c.category_type
     }
@@ -105,6 +106,6 @@ def get_category_id_by_name(user_id,category_name):
     return Category.query.filter_by(
         user_id=user_id,
         category_name=category_name
-    ).first().categroy_id
+    ).first().category_id
 
 
