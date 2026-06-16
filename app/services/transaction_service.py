@@ -164,7 +164,7 @@ def get_summary(user_id,**kwargs):
 def transaction_to_dict(t):
     return {
         "amount":t.amount,
-        "note":t.nont,
+        "note":t.note,
         "date":t.date,
         "category_id":t.category_id
     }
