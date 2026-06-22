@@ -18,13 +18,13 @@ def all_ts():
             "data":None,
             "message":"未登录"
             }),401
-    
-    data=get_monthly_ts_dict(request)
+    data = request.get_json(silent=True)
+    transactions=get_monthly_ts_dict(user_id,data)
     
     if data:
         return jsonify({
             "success": True,
-            "data":data,
+            "data":transactions,
             "message":"请求成功"
         }),200
     
