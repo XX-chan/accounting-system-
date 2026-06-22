@@ -1,5 +1,6 @@
 from flask import redirect,url_for,Blueprint,session,request,jsonify,render_template
-from app.services.transaction_service import get_monthly_ts_dict,add_transaction,edit_transaction,delete_ts,get_summary,get_all_ts_to_dict
+from app.services.transaction_service import get_monthly_ts_dict,add_transaction,edit_transaction,delete_trans,get_summary,get_all_ts_to_dict
+from app.models import Transaction
 from datetime import datetime
 
 #创建蓝图
@@ -134,15 +135,17 @@ def edit_ts(ts_id):
 @ts_bp.route("/delete_ts/<int:ts_id>",methods=["DELETE"])
 def delete_ts(ts_id):
     user_id=session.get("user_id")
-    result=delete_ts(user_id=user_id,transaction_id=ts_id)
+    result=delete_trans(user_id=user_id,transaction_id=ts_id)
     if result:
         return jsonify({
             "success": True,
             "data":None,
             "message":"删除成功"
         }),200
+
     return jsonify({
         "success": False,
         "data":None,
         "message":"删除失败"
     }),500
+    

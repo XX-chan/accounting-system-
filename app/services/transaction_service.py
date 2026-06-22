@@ -60,7 +60,7 @@ def edit_transaction(user_id,transaction_id,**kwargs):
     db.session.commit()
     return transaction
 
-def delete_ts(user_id,transaction_id):
+def delete_trans(user_id,transaction_id):
     transaction = get_transaction_by_id(user_id,transaction_id)
     if not transaction:
         raise ValueError("Transaction不存在")
@@ -77,7 +77,7 @@ def delete_ts(user_id,transaction_id):
 def get_transaction_by_id(user_id,transaction_id):
     transaction =  Transaction.query.filter(
         and_(
-            Transaction.transaction_id==transaction_id,User.user_id==user_id
+            Transaction.transaction_id==transaction_id,Transaction.user_id==user_id
         )
     ).first()
     return transaction
@@ -166,6 +166,7 @@ def get_summary(user_id,**kwargs):
 #将transactions转为字典格式
 def transaction_to_dict(t,cn=None):
     return {
+        "transaction_id":t.transaction_id,
         "amount":t.amount,
         "note":t.note,
         "date":t.date,
