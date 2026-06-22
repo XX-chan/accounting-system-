@@ -176,23 +176,22 @@ def transaction_to_dict(t,cn=None):
     }
 
 # 根据获得的data，返回月交易明细(字典类型)
-def get_monthly_ts_dict(user_id,request_obj):
-    year,month=extra_year_month_from_request(request_obj)
-    data={
-        "year":year,
-        "month":month
-    }
+def get_monthly_ts_dict(user_id,data):
+    year,month=extra_year_month_from_request(data)
 
-    transactions=get_transactions(user_id=user_id,**data)
-    return [transaction_to_dict(t) for t in transactions]
+    transactions=get_transactions(
+        user_id=user_id,
+        year=year,
+        month=month
+    )
+    return [transaction_to_dict(t,cn) for t,cn in transactions]
 
 
 
 # 返回用户指定的年月
-def extra_year_month_from_request(request_obj):
+def extra_year_month_from_request(data):
     
-    if request_obj.method=="POST":
-        data=request_obj.get_json()
+    if data:
         year=data.get("year")
         month=data.get("month")
 
