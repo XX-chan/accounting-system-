@@ -72,7 +72,7 @@ def monthly_report():
     month=data.get("month")
     expense=get_summary(user_id=user_id,year=year,month=month,category_type="expense")
     income=get_summary(user_id=user_id,year=year,month=month,category_type="income")
-    remaining=expense-income
+    remaining=income-expense
     redata={
         "expense":expense,
         "income":income,
