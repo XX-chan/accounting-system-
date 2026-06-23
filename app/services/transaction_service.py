@@ -194,10 +194,7 @@ def extra_year_month_from_request(data):
     if data:
         year=data.get("year")
         month=data.get("month")
-
-        if month < 1 or month > 12:
-            raise ValueError("月份必须在1-12之间")
-
+        
     #GET请求，使用当前年月
     else:
         year=datetime.now().year
