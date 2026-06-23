@@ -1,8 +1,11 @@
 
         async function renderExpenseTable(expense,tbodyId) {
+            console.log(tbodyId)
+    
+            const tbody=document.getElementById(tbodyId);
+            tbody.innerHTML="";
+
             if(!expense || expense.length == 0) {
-                const tbody=document.getElementById(tbodyId);
-                tbody.innerHTML="";
                 const tr=document.createElement("tr")
                 const td=document.createElement("td")
                 td.textContent = "暂无数据"
@@ -12,7 +15,6 @@
             }
 
             for (const item of expense) {
-                const tbody=document.getElementById(tbodyId);
                 const tr=document.createElement("tr")
 
                 const td1=document.createElement("td")
