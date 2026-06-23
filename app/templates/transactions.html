@@ -58,16 +58,21 @@
         <script src="{{ url_for('static',filename='js/render.js') }}"> </script>
         <script src="{{ url_for('static',filename='js/transaction-page.js') }}"> </script>
         <script>
-            const now=new Date();
-            let year=document.getElementById("input-year").value;
-            let month=document.getElementById("input-month").value;
-            if (!year || !month){
-                year = now.getFullYear();
-                month = now.getMonth()+1;
-            }
+            window.addEventListener("DOMContentLoaded", () => { 
+                const now=new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth()+1;
+                loadExpenseData({
+                    url:"/all_ts",
+                    body:{year,month}
+                })
+            })
+
             const btn =document.getElementById("search-btn")
             btn.textContent="查询";
-            btn.addEventListener("click",() => {
+            btn.addEventListener("click",() => { 
+                const year=document.getElementById("input-year").value;
+                const month=document.getElementById("input-month").value;
                 loadExpenseData({
                     url:"/all_ts",
                     body:{year,month}
