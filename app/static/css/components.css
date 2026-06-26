@@ -1,0 +1,12 @@
+.action-btn {
+    background: rgb(214, 189, 221);
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}

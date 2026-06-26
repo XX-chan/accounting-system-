@@ -1,0 +1,64 @@
+
+.action-bar {
+    display: flex;
+    justify-content: center;
+    gap:8rem;
+    padding: 1rem 0;
+}
+
+.dashboard {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border: 1px solid #cbc9c9 ;
+
+}
+
+
+
+.stats-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.stats-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: blueviolet;
+
+}
+
+.stats-value {
+
+    font-size: 14 px;
+}
+
+.table-container {
+    margin-top: 2rem;
+}
+
+.table-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+
+.expense-table thead th {
+    background-color: #f5f6fa;
+    font-weight: 600;
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.expense-table tbody tr {
+    padding: 20px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+} 
+
+.expense-table tbody td {
+    padding: 12px;
+}

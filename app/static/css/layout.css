@@ -1,0 +1,55 @@
+.page {
+    min-height: 100vh; /* 最小高度=100% 视口高度 */
+    display: flex; 
+    flex-direction: column; /* 子元素从上到下垂直排列 */
+}
+
+.container {
+    max-width: calc(100%-200px);
+    margin-left: 200px;
+    padding: 2rem;
+}
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 200px;
+    height:100vh;
+    background: #c9a0de;
+    z-index: 100;
+    overflow-y: auto;
+
+}
+
+/*导航内部容器：限制最大宽度+左右自动边距+内边距 */
+.nav-container {
+    width: 200px;
+    height: 100%;
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /*垂直方向居中 */
+    gap:0.5rem;
+}
+
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+}
+
+
+.nav-links li a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+}
+

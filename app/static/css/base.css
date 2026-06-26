@@ -1,0 +1,14 @@
+/*消除浏览器自带的默认的内外边距*/
+/*并把所有元素的尺寸计算方式统一改为border-box模式，后续可精准把控尺寸。*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color:#333;
+}
+
