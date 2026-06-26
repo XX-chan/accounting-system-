@@ -4,6 +4,7 @@ from operator import and_
 from sqlalchemy import extract,func
 from app.services.category_service import get_category_id_by_name
 from datetime import datetime
+from decimal import Decimal
 
 
 # 根据获得的data，添加交易
@@ -47,18 +48,30 @@ def edit_transaction(user_id,transaction_id,**kwargs):
     if not transaction:
         raise ValueError("Transaction 不存在")
     
-    if "user_id" in kwargs and kwargs["user_id"] != user_id:
-        raise ValueError("不允许更改交易所属用户")
-
-    if "transaction_id" in kwargs and kwargs["transatcion_id"] != transaction_id:
-        raise ValueError("不允许修改交易ID")
+    trans_date=transfer_format(**kwargs)
 
     for field in ["amount","note","date","category_id"]:
-        if field in kwargs:
-            setattr(transaction,field,kwargs[field])
+        if field in trans_date:
+            setattr(transaction,field,trans_date[field])
 
     db.session.commit()
     return transaction
+
+
+#将前端修改的transaction数据格式转化为正确的格式
+#date由字符串转为Python的date对象
+#amount由字符串转为float
+def transfer_format(**kwargs):
+    if kwargs["amount"] is not None:
+        kwargs["amount"]=Decimal(kwargs.get("amount"))
+
+    kwargs["date"]=datetime.strptime(kwargs.get("date"),"%Y-%m-%d").date()
+
+    return kwargs
+    
+
+
+
 
 def delete_trans(user_id,transaction_id):
     transaction = get_transaction_by_id(user_id,transaction_id)
@@ -169,7 +182,7 @@ def transaction_to_dict(t,cn=None):
         "transaction_id":t.transaction_id,
         "amount":t.amount,
         "note":t.note,
-        "date":t.date,
+        "date":t.date.strftime("%Y-%m-%d"),
         "category_id":t.category_id,
         "category_name":cn
        
@@ -194,7 +207,7 @@ def extra_year_month_from_request(data):
     if data:
         year=data.get("year")
         month=data.get("month")
-        
+
     #GET请求，使用当前年月
     else:
         year=datetime.now().year
