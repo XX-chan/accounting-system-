@@ -23,3 +23,5 @@ class Transaction(db.Model):
         db.ForeignKey("categories.category_id"),
         nullable=False
     )
+
+    category = db.relationship("Category")
