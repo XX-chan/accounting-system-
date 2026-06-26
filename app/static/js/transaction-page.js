@@ -11,9 +11,9 @@
                     const incomeData=result.data.income;
                     const remainingData=result.data.remaining;
 
-                    document.getElementById(config.expenseId).innerText=`RMB ${expenseData}`;
-                    document.getElementById(config.incomeId).innerText=`RMB ${incomeData}`;
-                    document.getElementById(config.remainingId).innerText=`RMB ${remainingData}`;   
+                    document.getElementById(config.expenseId).innerText=`¥ ${expenseData}`;
+                    document.getElementById(config.incomeId).innerText=`¥ ${incomeData}`;
+                    document.getElementById(config.remainingId).innerText=`¥ ${remainingData}`;   
                 } else {
                     console.error("接口返回失败",result.message);
                 }
