@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>add transaction
+    <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <nav>
+            <a href="{{url_for('user.index')}}">home</a>
+
+            <ul>
+                <li><a href="{{url_for('user.index')}}">仪表盘</a></li>
+                <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
+                <li><a href="#">汇总</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <h2> 新增交易 </h2>
+            <form method="POST" action="{{ url_for('transaction.add_ts') }}">
+                <label for="type">交易类型</label>
+                <select id="type" name="category_type">
+                    <option value="expense">支出</option>
+                    <option value="income">收入</option>
+                </select>
+
+
+                <label for="category">分类</label>
+                <select id="category" name="category_name"> 
+                    <option value="餐饮">餐饮</option>
+                    <option value="交通">交通</option>
+                    <option value="购物">购物</option>
+                    <option value="住房">住房</option>
+                    <option value="工资">工资</option>
+                    <option value="兼职">兼职</option>
+                    <option value="理财">理财</option>
+                    <option value="礼金">礼金</option>
+                </select>
+
+                <div>金额</div>
+                <input type="number" name="amount">
+
+                <div>备注</div>
+                <input type="text" name="note">
+
+                <div>
+                    <button type="submit">新增</button>
+                </div>
+            </form>
+
+
+        </div>
+
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
+
+    </body>
+
+</html>
