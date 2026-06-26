@@ -104,31 +104,30 @@ def monthly_top():
         "message":"请输入需求"
     }),500
 
-    
-    
 
 
+#编辑页面
+@ts_bp.route("/edit-page/<int:ts_id>",methods=["GET"])
+def edit_page(ts_id):
+    user_id=session.get("user_id")
+    transaction=get_transaction_by_id(user_id,ts_id)
 
-
+    return render_template("edit.html",transaction=transaction)
 
 
 #编辑交易明细
 @ts_bp.route("/edit/<int:ts_id>",methods=["POST"])
 def edit_ts(ts_id):
-    data=request.get_json()
+    data=request.form
     user_id=session.get("user_id")
     result=edit_transaction(user_id=user_id,transaction_id=ts_id,**data)
+
     if result:
-        return jsonify({
-            "success":True,
-            "data":result,
-            "message":"修改成功"
-        }),200
-    return jsonify({
-        "success": False,
-        "data":None,
-        "message":"添加失败"
-    }),403
+        return redirect(url_for("user.index"))
+    
+    transaction=get_transaction_by_id(user_id,ts_id)
+    return render_template("edit.html",transaction=transaction,error="保存失败，请检查输入")
+
 
 
 #删除交易
