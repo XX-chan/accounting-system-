@@ -65,7 +65,7 @@ def register_page():
 @user_bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("user.login")) 
+    return redirect(url_for("user.login_page")) 
     
 
 
