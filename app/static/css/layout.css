@@ -3,25 +3,24 @@
     display: flex;
 }
 
+/*右侧区域*/
 .container {
     flex:1;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     padding-top: 2rem;
-    align-items: center;
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    height: 100vh;
     width: 900px;
 }
 
+/*导航栏区域*/
 .navbar-wrapper {
     width: 200px;
     flex-shrink: 0;
-    
 }
 .navbar {
     position: fixed;
@@ -37,8 +36,7 @@
 
 /*导航内部容器：限制最大宽度+左右自动边距+内边距 */
 .nav-container {
-    width: 200px;
-    height: 100%;
+  
     padding: 1.5rem 0;
     display: flex;
     flex-direction: column;
