@@ -3,60 +3,78 @@
 <head>
     <title>transaction</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/components.css')}}">    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/transaction.css')}}">
+    
 </head>
 
 <body>
-    <nav class="navbar">
-    
-        <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="{{url_for('user.index')}}">首页</a></li>
-                <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
-                <li><a href="#">汇总</a></li>
-                <li><a href="{{url_for('user.login_page')}}">登录</a></li>
-                <li><a href="{{url_for('user.register_page')}}">注册</a></li>
-                <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
-            </ul>
+    <div class="page">
+        <div class="navbar-wrapper">
+            <nav class="navbar">
+                <div class="nav-container">
+
+                    <ul class="nav-links">
+                        <li><a href="{{url_for('user.index')}}">首页</a></li>
+                        <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
+                        <li><a href="#">汇总</a></li>
+                        <li><a href="{{url_for('user.login_page')}}">登录</a></li>
+                        <li><a href="{{url_for('user.register_page')}}">注册</a></li>
+                        <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-    </nav>
 
 
 
-    <div class="expense-table">
-        <h2> 历史交易明细 </h2>
-    
-            
-        <form method="POST" action="{{ url_for('transaction.all_ts')}}" >
-            <input id="input-year" placeholder="输入查询年份">
-            <input id="input-month" placeholder="输入查询月份">
+        <div class="container">
+            <div class="content">
+                <h2 class="table-title"> 历史交易明细 </h2>
+                
+                <div class="add-container">
+                    <form class="form p-trans" method="POST" action="{{ url_for('transaction.all_ts')}}" >
+                        
+                        <div class="form-row mb-trans">
+                            <input id="input-year" placeholder="输入查询年份">
+                            <input id="input-month" placeholder="输入查询月份">
+                            <button type="button" id="search-btn">查询</button>
+                        </div>
 
-            <div>
-                <button type="button" id="search-btn">查询</button>
+                      
+
+                    </form>
+                </div>
+                        
+
+
+
+                <div class="table-container">
+
+                    <table class="expense-table">
+                        <thead>
+                            <tr>
+                                <th>分类</th>
+                                <th>金额</th>
+                                <th>备注</th>
+                                <th>日期</th>
+                                <th>编辑</th>
+                                <th>删除</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="expenseList">
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-
-        </form>
-            
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>分类</th>
-                    <th>金额</th>
-                    <th>备注</th>
-                    <th>日期</th>
-                    <th>编辑</th>
-                    <th>删除</th>
-                </tr>
-            </thead>
-
-            <tbody id="expenseList">
-                 <tr>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-
+        </div>
     </div>
 
 <script src="{{ url_for('static',filename='js/api.js') }}"></script>

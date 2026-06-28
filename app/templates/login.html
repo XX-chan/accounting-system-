@@ -3,34 +3,44 @@
     <head>
         <title>登录页面</title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/components.css')}}">    
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/login.css')}}">
     </head>
 
-    <body>
-        <form method="POST" action="{{ url_for('user.login') }}">
-            <div class="green-text form-group mt-5">
-                用户名
+<body>
+    <div class="form-container">
+        <form class="form p-login" method="POST" action="{{ url_for('user.login') }}">
+            
+            <div class="form-row mb-login">
+                <div class="label">用户名:</div>
+                 <input type="text" name="username" calss="from-control">
             </div>
-            <input type="text" name="username" calss="from-control">
 
-            <div class="greeen-text form-group">
-                密码
+            <div class="form-row">
+                <div class="label">密码:</div>
+                <input type="text" name="password">
             </div>
-            <input type="text" name="password">
-            <div class="center">
 
-            <button type="submit">登录</button>
 
+            <div class="btn-center">
+                <button type="submit">登录</button>
             </div>
+            
+            <div class="string-center">
+                <a href="{{ url_for('user.register_page')}}">还没有账号？</a>
+            </div>
+        
+        
+            {% if error %}
+            <p style="color:red;">{{ error }}</p>
+            {% endif %}
+
         </form>
 
-        <div>
-            <a href="{{ url_for('user.register_page')}}">还没有账号？</a>
-        </div>
+    </div>
 
-
-        {% if error %}
-        <p style="color:red;">{{ error }}</p>
-        {% endif %}
-    </body>
+</body>
 
 </html>

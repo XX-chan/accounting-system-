@@ -24,10 +24,11 @@
 
 
         async function loadExpenseData(config) {
+            console.log("reload called:",config)
             try {
                 const top_n=10;
                 const result=await request(config.url,"post",config.body)
-    
+                
                 if(result.success){
                     renderExpenseTable(result.data,"expenseList")
                 }
@@ -38,9 +39,12 @@
         }
 
 
-        
+        let loading = false;
+
         async function deleteExpense(ts_id) {
             if(!confirm("确定要删除吗？")) return;
+            if (loading) return;
+            loading = true;
 
             try{
                 const res=await fetch(`/delete_ts/${ts_id}`,{
@@ -55,6 +59,8 @@
                 }
             } catch (error){
                 console.error("删除失败",error)
+            }finally {
+                loading = false;
             }
                 
         }

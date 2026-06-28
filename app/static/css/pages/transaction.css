@@ -1,0 +1,27 @@
+/*transaction页面css*/
+.add-container {
+    display: flex;
+    justify-content: center;
+   
+}
+
+
+/*add-transaction页面css*/
+.addts-container {
+    display: flex;
+    justify-content: center;
+    padding: flex-start;
+}
+
+.label-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  
+}
+
+.label-type {
+    display: flex;
+    gap: 6px;
+ 
+}

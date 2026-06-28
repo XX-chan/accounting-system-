@@ -1,59 +1,87 @@
 <!DOCTYPE html>
 <html>
-    <head>add transaction
-    <meta charset="UTF-8">
+    <head>
+        <title>Add Transaction</title>  
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/components.css')}}">    
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/transaction.css')}}">
+
     </head>
 
     <body>
-        <nav>
-            <a href="{{url_for('user.index')}}">home</a>
+        <div class="page">
+            <div class="navbar-wrapper">
+                <nav class="navbar">
+                    <div class="nav-container">
 
-            <ul>
-                <li><a href="{{url_for('user.index')}}">仪表盘</a></li>
-                <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
-                <li><a href="#">汇总</a></li>
-            </ul>
-        </nav>
+                        <ul class="nav-links">
+                            <li><a href="{{url_for('user.index')}}">仪表盘</a></li>
+                            <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
+                            <li><a href="#">汇总</a></li>
+                            <li><a href="{{url_for('user.login_page')}}">登录</a></li>
+                            <li><a href="{{url_for('user.register_page')}}">注册</a></li>
+                            <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
 
-        <div>
-            <h2> 新增交易 </h2>
-            <form method="POST" action="{{ url_for('transaction.add_ts') }}">
-                <label for="type">交易类型</label>
-                <select id="type" name="category_type">
-                    <option value="expense">支出</option>
-                    <option value="income">收入</option>
-                </select>
+            <div class="container">
+                <div class="content">
+                    <h2 class="form-title"> 新增交易 </h2>
 
+                    <div class="addts-container">
+                        <form class="form p-addts" method="POST" action="{{ url_for('transaction.add_ts') }}">
 
-                <label for="category">分类</label>
-                <select id="category" name="category_name"> 
-                    <option value="餐饮">餐饮</option>
-                    <option value="交通">交通</option>
-                    <option value="购物">购物</option>
-                    <option value="住房">住房</option>
-                    <option value="工资">工资</option>
-                    <option value="兼职">兼职</option>
-                    <option value="理财">理财</option>
-                    <option value="礼金">礼金</option>
-                </select>
+                            <div class="label-container">
+                                <div class="label-type">
+                                    <label for="type">交易类型:</label>
+                                    <select id="type" name="category_type">
+                                        <option value="expense">支出</option>
+                                        <option value="income">收入</option>
+                                    </select>
+                                </div>
 
-                <div>金额</div>
-                <input type="number" name="amount">
+                                <div class="label-type">
+                                    <label for="category">分类:</label>
+                                    <select id="category" name="category_name"> 
+                                        <option value="餐饮">餐饮</option>
+                                        <option value="交通">交通</option>
+                                        <option value="购物">购物</option>
+                                        <option value="住房">住房</option>
+                                        <option value="工资">工资</option>
+                                        <option value="兼职">兼职</option>
+                                        <option value="理财">理财</option>
+                                        <option value="礼金">礼金</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div>备注</div>
-                <input type="text" name="note">
+                            <div class="form-row mb-addts">
+                                <div class="label">金额:</div>
+                                <input type="number" name="amount">
+                            </div>
 
-                <div>
-                    <button type="submit">新增</button>
+                            <div class="form-row mb-addts">
+                                <div class="label">备注:</div>
+                                <input type="text" name="note">
+                            </div>
+
+                            <div class="btn-center">
+                                <button type="submit">新增</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    {% if error %}
+                    <p style="color:red;">{{ error }}</p>
+                    {% endif %}
                 </div>
-            </form>
-
-
+            </div>
         </div>
-
-        {% if error %}
-        <p style="color:red;">{{ error }}</p>
-        {% endif %}
 
     </body>
 

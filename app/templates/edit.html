@@ -3,55 +3,70 @@
     <head> 
         <title>Edit Transaction</title> 
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/components.css')}}">    
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/edit.css')}}">
+    
     </head>
 
 <body>
-     <nav class="navbar">
-        <div class="nav-container">
+    <div class="page">
+        <nav class="navbar">
+            <div class="nav-container">
 
-            <ul class="nav-links">
-                <li><a href="{{url_for('user.index')}}">首页</a></li>
-                <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
-                <li><a href="#">汇总</a></li>
-                <li><a href="{{url_for('user.login_page')}}">登录</a></li>
-                <li><a href="{{url_for('user.register_page')}}">注册</a></li>
-                <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
-            </ul>
+                <ul class="nav-links">
+                    <li><a href="{{url_for('user.index')}}">首页</a></li>
+                    <li><a href="{{url_for('transaction.all_ts_page')}}">交易明细</a></li>
+                    <li><a href="#">汇总</a></li>
+                    <li><a href="{{url_for('user.login_page')}}">登录</a></li>
+                    <li><a href="{{url_for('user.register_page')}}">注册</a></li>
+                    <li><a href="{{url_for('user.logout')}}">退出登录</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="content">
+
+                <h2 class="form-title">编辑交易</h2>
+
+                <div class="edit-container">
+                    <form method="POST" action="{{ url_for('transaction.edit_ts',ts_id=transaction.transaction_id )}}">
+                        
+                        <div class="form-row mb-login">
+                            <div class="label">分类:</div>
+                            <input name="category_name" value="{{ transaction.category.category_name}}">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="label">金额:</div>
+                            <input name="amount" value="{{ transaction.amount}}">
+                        </div>
+                            
+                        <div class="form-row">
+                            <div class="label">备注:</div>
+                            <input name="note" value="{{ transaction.note}}">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="label">日期:</div>
+                            <input name="date" value="{{ transaction.date}}">
+                        </div>
+
+                        <div class="btn-center">
+                            <button type="submit"> 保存 </button>
+                        </div>
+                    </form>
+
+                    {% if error %}
+                        <div style="color: red;">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </nav>
-
-    <div>
-        <h2>编辑交易</h2>
-        <form method="POST" action="{{ url_for('transaction.edit_ts',ts_id=transaction.transaction_id )}}">
-            <div>
-                分类
-                <input name="category_name" value="{{ transaction.category.category_name}}">
-            </div>
-
-            <div>
-                金额
-                <input name="amount" value="{{ transaction.amount}}">
-            </div>
-                
-            <div>
-                备注
-                <input name="note" value="{{ transaction.note}}">
-            </div>
-
-            <div>
-                日期
-                <input name="date" value="{{ transaction.date}}">
-            </div>
-
-            <button type="submit"> 保存 </button>
-        </form>
-
-        {% if error %}
-            <div style="color: red;">
-                {{ error }}
-            </div>
-        {% endif %}
     </div>
 </body>
 
