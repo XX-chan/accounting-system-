@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/components.css')}}">    
     <link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/transaction.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/pages/others-pages.css')}}">
     
 </head>
 
@@ -52,25 +52,27 @@
 
 
                 <div class="table-container">
+                    <div class="table-scroll">
 
-                    <table class="expense-table">
-                        <thead>
-                            <tr>
-                                <th>分类</th>
-                                <th>金额</th>
-                                <th>备注</th>
-                                <th>日期</th>
-                                <th>编辑</th>
-                                <th>删除</th>
-                            </tr>
-                        </thead>
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>分类</th>
+                                    <th>金额</th>
+                                    <th>备注</th>
+                                    <th>日期</th>
+                                    <th>编辑</th>
+                                    <th>删除</th>
+                                </tr>
+                            </thead>
 
-                        <tbody id="expenseList">
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <tbody id="expenseList">
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
