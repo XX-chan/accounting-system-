@@ -1,0 +1,10 @@
+
+/*form row 不同页面的样式 */
+.mb-login { margin-bottom: 15px;}
+.mb-trans { margin-bottom: 6px;}
+.mb-addts { margin-bottom: 20px;}
+
+/*form 的不同页面样式 */
+.p-login { padding: 40px 60px;}
+.p-addts { padding: 50px 80px}
+.p-trans { padding: 20px 100px;}

@@ -1,0 +1,40 @@
+/*放置由多个组件组成的页面模块*/
+
+/*nav 模块*/
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+}
+
+
+.nav-links li a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+}
+
+/*table 模块*/
+.table-container {
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    min-height: 0;
+    margin-top: 2rem;
+}
+
+.table-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.table-scroll {
+    flex:1;
+    overflow-y: auto;
+    min-height: 0;
+
+}

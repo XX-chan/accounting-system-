@@ -1,31 +1,3 @@
-/*导航内部容器：限制最大宽度+左右自动边距+内边距 */
-.nav-container {
-    padding: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /*垂直方向居中 */
-    gap:0.5rem;
-    
-}
-
-
-.nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    list-style: none;
-}
-
-
-.nav-links li a {
-    display: block;
-    text-decoration: none;
-    text-align: center;
-    font-weight: 500;
-    font-size: 1.2rem;
-    padding: 0.5rem 0;
-}
-
 
 .action-btn {
     background: #c9a0de;
@@ -54,7 +26,7 @@ button {
 }
 
 
-/*form的通用样式*/
+/*form 组件*/
 .form {
     border: 1px solid #e0e0e0;
     background: rgb(255, 255, 255);
@@ -63,17 +35,13 @@ button {
 }
 
 
-.p-login { padding: 40px 60px;}
-.p-trans { padding: 20px 100px;}
-.p-addts { padding: 50px 80px}
-
 
 .form-title {
     margin-bottom: 20px;
     text-align: center;
 }
 
-/*form row的样式*/
+/*form row 组件*/
 .form-row {
     display: flex;
     align-items: center;
@@ -90,27 +58,7 @@ button {
 }
 
 
-
-/*table的通用样式*/
-.table-container {
-    flex:1;
-    display:flex;
-    flex-direction: column;
-    min-height: 0;
-    margin-top: 2rem;
-}
-
-.table-title {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.table-scroll {
-    flex:1;
-    overflow-y: auto;
-    min-height: 0;
-
-}
+/*table 组件*/
 .expense-table {
     width: 100%;
     border-collapse: collapse;
