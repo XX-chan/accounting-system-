@@ -25,3 +25,11 @@
     gap: 6px;
  
 }
+
+
+/*edit 页面css*/
+.edit-container {
+    display: flex;
+    justify-content:center ;
+    padding: flex-start;
+}
