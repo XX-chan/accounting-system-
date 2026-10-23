@@ -39,11 +39,15 @@ def create_user(username,password):
     ]
     db.session.add_all(categories)
 
+
     try:
+        print("准备提交数据库事务",flush=True)
         db.session.commit()
-    except IntegrityError:
+    except IntegrityError as e:
+        
+        print("数据完整性错误:",repr(e.orig))
         db.session.rollback()
-        raise ValueError("数据冲突")
+        raise ValueError("数据冲突") from e
 
     return user
 
