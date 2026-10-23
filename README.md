@@ -3,6 +3,7 @@ Accounting-System
 
 ![首页](./app/static/images/expense-home.png)
 ![历史交易明细页面](./app/static/images/history.png)
+![新增页面](./app/static/images/新增页面.png)
 
 ## 功能
 - 添加收入或者支出
